@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Rive Fitness Loader</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+  html,body{height:100%;margin:0}body{display:flex;justify-content:center;align-items:center;background:#232323}canvas{width:500px}</style>
+  <script src="https://unpkg.com/@rive-app/webgl2"></script>
+</head>
+<body>
+  <canvas id="rive-canvas" width="750" height="824"></canvas>
+  <script>
+    const r = new rive.Rive({
+      src:'fitness_loader_final.riv', 
+      canvas:document.getElementById('rive-canvas'),
+      autoplay:true,
+      autoBind:true,
+      artboard:'MAIN', 
+      stateMachines:'State Machine 1',
+
+      onLoad: function() {
+        r.resizeDrawingSurfaceToCanvas();
+      }
+
+    });
+    addEventListener('resize',()=>r.resizeDrawingSurfaceToCanvas());
+  </script>
+</body>
+</html>
