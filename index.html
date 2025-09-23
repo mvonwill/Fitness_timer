@@ -3,28 +3,46 @@
 <head>
   <meta charset="utf-8" />
   <title>Rive Fitness Loader</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=600,initial-scale=1,user-scalable=no" />
   <style>
-  html,body{height:100%;margin:0}body{display:flex;justify-content:center;align-items:center;background:#7c7c7c00}canvas{width:600px}</style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: transparent;
+    }
+    canvas {
+      width: 600px !important;
+      height: 659px !important;
+      display: block;
+    }
+  </style>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
 </head>
 <body>
   <canvas id="rive-canvas" width="600" height="659"></canvas>
   <script>
     const r = new rive.Rive({
-      src:'fitness_loader_final.riv', 
-      canvas:document.getElementById('rive-canvas'),
-      autoplay:true,
-      autoBind:true,
-      artboard:'MAIN', 
-      stateMachines:'State Machine 1',
-
+      src: 'fitness_loader_final.riv', 
+      canvas: document.getElementById('rive-canvas'),
+      autoplay: true,
+      autoBind: true,
+      artboard: 'MAIN', 
+      stateMachines: 'State Machine 1',
       onLoad: function() {
-        r.resizeDrawingSurfaceToCanvas();
+        // Don't call resizeDrawingSurfaceToCanvas() - this causes the scaling issues
+        console.log('Rive loaded successfully');
       }
-
     });
-    addEventListener('resize',()=>r.resizeDrawingSurfaceToCanvas());
+    
+    // Remove the resize event listener - this was causing jittering
+    // addEventListener('resize', () => r.resizeDrawingSurfaceToCanvas());
   </script>
 </body>
 </html>
