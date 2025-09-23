@@ -5,40 +5,43 @@
   <title>Rive Fitness Loader</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-  <style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    background: transparent; /* allow Squarespace background to show through */
-  }
-  body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  canvas {
-    width: 600px;
-  }
-</style>
-
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: transparent; /* allow Squarespace background to show through */
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      width: 600px;
+      background: transparent; /* ensure canvas itself is transparent */
+    }
+  </style>
+  <script src="https://unpkg.com/@rive-app/webgl2"></script>
 </head>
 <body>
   <canvas id="rive-canvas" width="600" height="659"></canvas>
   <script>
     const r = new rive.Rive({
-      src:'fitness_loader_final.riv', 
-      canvas:document.getElementById('rive-canvas'),
-      autoplay:true,
-      autoBind:true,
-      artboard:'MAIN', 
-      stateMachines:'State Machine 1',
+      src: 'fitness_loader_final.riv',
+      canvas: document.getElementById('rive-canvas'),
+      autoplay: true,
+      autoBind: true,
+      artboard: 'MAIN',
+      stateMachines: 'State Machine 1',
+      backgroundColor: null,   // no solid background fill
+      transparent: true,       // keep transparency
 
       onLoad: function() {
         r.resizeDrawingSurfaceToCanvas();
       }
-
     });
-    addEventListener('resize',()=>r.resizeDrawingSurfaceToCanvas());
+
+    addEventListener('resize', () => r.resizeDrawingSurfaceToCanvas());
   </script>
 </body>
 </html>
+
