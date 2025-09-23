@@ -3,106 +3,28 @@
 <head>
   <meta charset="utf-8" />
   <title>Rive Fitness Loader</title>
-  <meta name="viewport" content="width=600, height=659, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-    html {
-      width: 600px !important;
-      height: 659px !important;
-      overflow: hidden !important;
-      margin: 0 !important;
-      padding: 0 !important;
-    }
-    body {
-      width: 600px !important;
-      height: 659px !important;
-      margin: 0 !important;
-      padding: 0 !important;
-      background: transparent !important;
-      overflow: hidden !important;
-      position: relative !important;
-    }
-    #rive-wrapper {
-      width: 600px !important;
-      height: 659px !important;
-      position: absolute !important;
-      top: 0 !important;
-      left: 0 !important;
-      overflow: hidden !important;
-    }
-    #rive-canvas {
-      width: 600px !important;
-      height: 659px !important;
-      display: block !important;
-      position: absolute !important;
-      top: 0 !important;
-      left: 0 !important;
-    }
-  </style>
+  html,body{height:100%;margin:0}body{display:flex;justify-content:center;align-items:center;background:#7c7c7c00}canvas{width:600px}</style>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
 </head>
 <body>
-  <div id="rive-wrapper">
-    <canvas id="rive-canvas" width="600" height="659"></canvas>
-  </div>
-  
+  <canvas id="rive-canvas" width="600" height="659"></canvas>
   <script>
-    // Prevent any scaling by locking dimensions immediately
-    const canvas = document.getElementById('rive-canvas');
-    const wrapper = document.getElementById('rive-wrapper');
-    
-    function enforceSize() {
-      // Lock wrapper
-      wrapper.style.width = '600px';
-      wrapper.style.height = '659px';
-      
-      // Lock canvas
-      canvas.width = 600;
-      canvas.height = 659;
-      canvas.style.width = '600px';
-      canvas.style.height = '659px';
-      
-      // Lock body/html
-      document.body.style.width = '600px';
-      document.body.style.height = '659px';
-      document.documentElement.style.width = '600px';
-      document.documentElement.style.height = '659px';
-    }
-    
-    // Enforce size before Rive loads
-    enforceSize();
-    
-    // Load Rive
     const r = new rive.Rive({
-      src: 'fitness_loader_final.riv',
-      canvas: canvas,
-      autoplay: true,
-      autoBind: true,
-      artboard: 'MAIN',
-      stateMachines: 'State Machine 1',
+      src:'fitness_loader_final.riv', 
+      canvas:document.getElementById('rive-canvas'),
+      autoplay:true,
+      autoBind:true,
+      artboard:'MAIN', 
+      stateMachines:'State Machine 1',
+
       onLoad: function() {
-        enforceSize();
-        // Call resize after enforcing our size
         r.resizeDrawingSurfaceToCanvas();
       }
+
     });
-    
-    // Aggressively enforce size
-    const sizeInterval = setInterval(enforceSize, 50);
-    
-    // Stop aggressive enforcement after 3 seconds
-    setTimeout(() => {
-      clearInterval(sizeInterval);
-      // But continue with less frequent checks
-      setInterval(enforceSize, 500);
-    }, 3000);
-    
-    // Handle resize events
-    addEventListener('resize', () => {
-      enforceSize();
-      if (r && r.resizeDrawingSurfaceToCanvas) {
-        r.resizeDrawingSurfaceToCanvas();
-      }
-    });
+    addEventListener('resize',()=>r.resizeDrawingSurfaceToCanvas());
   </script>
 </body>
 </html>
