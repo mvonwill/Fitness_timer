@@ -8,18 +8,16 @@
     html, body {
       height: 100%;
       margin: 0;
-      background: transparent; /* Let Squarespace background show through */
-    }
-    body {
+      background: #7c7c7c;
       display: flex;
       justify-content: center;
       align-items: center;
     }
     canvas {
-      width: 100%;     /* Fill iframe width */
-      height: 100%;    /* Fill iframe height */
-      display: block;  /* Prevent inline gaps */
-      background: transparent; /* Ensure canvas itself is transparent */
+      width: 100%;
+      height: auto;
+      max-width: 600px;  /* keeps your design scale capped */
+      display: block;
     }
   </style>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
@@ -34,12 +32,14 @@
       autoBind: true,
       artboard: 'MAIN',
       stateMachines: 'State Machine 1',
-      onLoad: function() {
+      onLoad: () => {
         r.resizeDrawingSurfaceToCanvas();
       }
     });
 
-    addEventListener('resize', () => r.resizeDrawingSurfaceToCanvas());
+    window.addEventListener('resize', () => {
+      r.resizeDrawingSurfaceToCanvas();
+    });
   </script>
 </body>
 </html>
