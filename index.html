@@ -16,7 +16,7 @@
     canvas {
       width: 100%;
       height: auto;
-      max-width: 600px;  /* keeps your design scale capped */
+      max-width: 600px; /* cap so it doesn’t blow up too big */
       display: block;
     }
   </style>
@@ -25,21 +25,27 @@
 <body>
   <canvas id="rive-canvas"></canvas>
   <script>
+    const canvas = document.getElementById('rive-canvas');
+
+    function resizeCanvas() {
+      const rect = canvas.getBoundingClientRect();
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      r.resizeDrawingSurfaceToCanvas();
+    }
+
     const r = new rive.Rive({
       src: 'fitness_loader_final.riv',
-      canvas: document.getElementById('rive-canvas'),
+      canvas: canvas,
       autoplay: true,
       autoBind: true,
       artboard: 'MAIN',
       stateMachines: 'State Machine 1',
-      onLoad: () => {
-        r.resizeDrawingSurfaceToCanvas();
-      }
+      onLoad: () => resizeCanvas()
     });
 
-    window.addEventListener('resize', () => {
-      r.resizeDrawingSurfaceToCanvas();
-    });
+    window.addEventListener('resize', resizeCanvas);
   </script>
 </body>
 </html>
