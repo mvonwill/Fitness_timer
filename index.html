@@ -8,7 +8,7 @@
     html, body {
       height: 100%;
       margin: 0;
-      background: transparent; /* allow Squarespace background to show through */
+      background: transparent; /* Let Squarespace background show through */
     }
     body {
       display: flex;
@@ -16,14 +16,16 @@
       align-items: center;
     }
     canvas {
-      width: 600px;
-      background: transparent; /* ensure canvas itself is transparent */
+      width: 100%;     /* Fill iframe width */
+      height: 100%;    /* Fill iframe height */
+      display: block;  /* Prevent inline gaps */
+      background: transparent; /* Ensure canvas itself is transparent */
     }
   </style>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
 </head>
 <body>
-  <canvas id="rive-canvas" width="600" height="659"></canvas>
+  <canvas id="rive-canvas"></canvas>
   <script>
     const r = new rive.Rive({
       src: 'fitness_loader_final.riv',
@@ -32,7 +34,6 @@
       autoBind: true,
       artboard: 'MAIN',
       stateMachines: 'State Machine 1',
-     
       onLoad: function() {
         r.resizeDrawingSurfaceToCanvas();
       }
@@ -42,4 +43,3 @@
   </script>
 </body>
 </html>
-
