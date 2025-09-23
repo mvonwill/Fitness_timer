@@ -11,30 +11,45 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      background: transparent; /* make body transparent */
+      background: transparent;
     }
     canvas {
+      width: 600px;      /* lock CSS width */
+      height: 659px;     /* lock CSS height */
       display: block;
-      background: transparent; /* make canvas transparent */
+      background: transparent;
     }
   </style>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
 </head>
 <body>
-  <canvas id="rive-canvas" width="600" height="659"></canvas>
+  <canvas id="rive-canvas"></canvas>
   <script>
+    const canvas = document.getElementById('rive-canvas');
+
     const r = new rive.Rive({
       src: 'fitness_loader_final.riv',
-      canvas: document.getElementById('rive-canvas'),
+      canvas: canvas,
       autoplay: true,
       autoBind: true,
       artboard: 'MAIN',
       stateMachines: 'State Machine 1',
-      background: false, // make Rive render transparent
-      onLoad: () => r.resizeDrawingSurfaceToCanvas()
+      background: false,
+      onLoad: () => {
+        // Lock the drawing surface to match CSS size (ignore DPR)
+        const rect = canvas.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        r.resizeDrawingSurfaceToCanvas();
+      }
     });
 
-    window.addEventListener('resize', () => r.resizeDrawingSurfaceToCanvas());
+    window.addEventListener('resize', () => {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+      r.resizeDrawingSurfaceToCanvas();
+    });
   </script>
 </body>
 </html>
