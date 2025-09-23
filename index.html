@@ -1,46 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<title>Rive Fitness Loader</title>
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<style>
-  html, body {
-    margin: 0;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: transparent;
-  }
-  canvas {
-    width: 100%;          /* responsive width */
-    height: auto;         /* preserve aspect ratio */
-    max-width: 600px;     /* prevents canvas from getting too large on desktop */
-    display: block;
-    background: transparent;
-  }
-</style>
-<script src="https://unpkg.com/@rive-app/webgl2"></script>
+  <meta charset="utf-8" />
+  <title>Rive Fitness Loader</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+  html,body{height:100%;margin:0}body{display:flex;justify-content:center;align-items:center;background:#7c7c7c00}canvas{width:600px}</style>
+  <script src="https://unpkg.com/@rive-app/webgl2"></script>
 </head>
 <body>
-<canvas id="rive-canvas"></canvas>
-<script>
-const canvas = document.getElementById('rive-canvas');
+  <canvas id="rive-canvas" width="600" height="659"></canvas>
+  <script>
+    const r = new rive.Rive({
+      src:'fitness_loader_final.riv', 
+      canvas:document.getElementById('rive-canvas'),
+      autoplay:true,
+      autoBind:true,
+      artboard:'MAIN', 
+      stateMachines:'State Machine 1',
 
-const r = new rive.Rive({
-  src: 'fitness_loader_final.riv',
-  canvas: canvas,
-  autoplay: true,
-  autoBind: true,
-  artboard: 'MAIN',
-  stateMachines: 'State Machine 1',
-  background: false,
-  onLoad: () => r.resizeDrawingSurfaceToCanvas()
-});
+      onLoad: function() {
+        r.resizeDrawingSurfaceToCanvas();
+      }
 
-// Resize drawing surface whenever window resizes
-window.addEventListener('resize', () => r.resizeDrawingSurfaceToCanvas());
-</script>
+    });
+    addEventListener('resize',()=>r.resizeDrawingSurfaceToCanvas());
+  </script>
 </body>
 </html>
