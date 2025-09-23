@@ -3,24 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <title>Rive Fitness Loader</title>
-  <meta name="viewport" content="width=600,initial-scale=1,user-scalable=no" />
   <style>
     html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
+      height: 659px !important;
+      width: 600px !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      position: fixed !important;
+      top: 0 !important;
+      left: 0 !important;
     }
     body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: transparent;
+      background: transparent !important;
     }
     canvas {
       width: 600px !important;
       height: 659px !important;
-      display: block;
+      display: block !important;
+      position: absolute !important;
+      top: 0 !important;
+      left: 0 !important;
+      transform: none !important;
+      zoom: 1 !important;
     }
   </style>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
@@ -28,15 +33,28 @@
 <body>
   <canvas id="rive-canvas" width="600" height="659"></canvas>
   <script>
+    const canvas = document.getElementById('rive-canvas');
+    
+    // Lock canvas dimensions before Rive loads
+    canvas.width = 600;
+    canvas.height = 659;
+    canvas.style.width = '600px';
+    canvas.style.height = '659px';
+    
     const r = new rive.Rive({
       src: 'fitness_loader_final.riv', 
-      canvas: document.getElementById('rive-canvas'),
+      canvas: canvas,
       autoplay: true,
       autoBind: true,
       artboard: 'MAIN', 
       stateMachines: 'State Machine 1',
+      shouldDisableRiveListeners: true,
       onLoad: function() {
-        // Don't call resizeDrawingSurfaceToCanvas() - this causes the scaling issues
+        // Force dimensions again after load
+        canvas.width = 600;
+        canvas.height = 659;
+        canvas.style.width = '600px';
+        canvas.style.height = '659px';
         console.log('Rive loaded successfully');
       }
     });
