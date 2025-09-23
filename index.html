@@ -4,63 +4,82 @@
   <meta charset="utf-8" />
   <title>Rive Fitness Loader</title>
   <style>
-    html, body {
-      height: 659px !important;
-      width: 600px !important;
+    * {
       margin: 0 !important;
       padding: 0 !important;
+      box-sizing: border-box !important;
+    }
+    html, body {
+      width: 600px !important;
+      height: 659px !important;
       overflow: hidden !important;
-      position: fixed !important;
-      top: 0 !important;
-      left: 0 !important;
-    }
-    body {
       background: transparent !important;
+      position: relative !important;
     }
-    canvas {
+    #rive-canvas {
       width: 600px !important;
       height: 659px !important;
       display: block !important;
       position: absolute !important;
       top: 0 !important;
       left: 0 !important;
-      transform: none !important;
-      zoom: 1 !important;
+      pointer-events: auto !important;
     }
   </style>
-  <script src="https://unpkg.com/@rive-app/webgl2"></script>
 </head>
 <body>
-  <canvas id="rive-canvas" width="600" height="659"></canvas>
+  <canvas id="rive-canvas"></canvas>
+  <script src="https://unpkg.com/@rive-app/webgl2"></script>
   <script>
+    // Completely disable viewport scaling
+    let metaViewport = document.createElement('meta');
+    metaViewport.name = 'viewport';
+    metaViewport.content = 'width=600, height=659, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no';
+    document.head.appendChild(metaViewport);
+    
     const canvas = document.getElementById('rive-canvas');
     
-    // Lock canvas dimensions before Rive loads
-    canvas.width = 600;
-    canvas.height = 659;
-    canvas.style.width = '600px';
-    canvas.style.height = '659px';
+    // Set canvas properties before any Rive interaction
+    function lockCanvas() {
+      canvas.width = 600;
+      canvas.height = 659;
+      canvas.style.cssText = 'width: 600px !important; height: 659px !important; display: block !important; position: absolute !important; top: 0 !important; left: 0 !important;';
+    }
     
+    lockCanvas();
+    
+    // Initialize Rive with autoBind enabled and interactive features
     const r = new rive.Rive({
-      src: 'fitness_loader_final.riv', 
+      src: 'fitness_loader_final.riv',
       canvas: canvas,
       autoplay: true,
-      autoBind: true,
-      artboard: 'MAIN', 
+      autoBind: true, // Keep autoBind for interactivity
+      artboard: 'MAIN',
       stateMachines: 'State Machine 1',
-      shouldDisableRiveListeners: true,
+      fit: rive.Fit.None, // Disable automatic fitting
+      alignment: rive.Alignment.TopLeft, // Lock alignment
       onLoad: function() {
-        // Force dimensions again after load
-        canvas.width = 600;
-        canvas.height = 659;
-        canvas.style.width = '600px';
-        canvas.style.height = '659px';
-        console.log('Rive loaded successfully');
+        lockCanvas();
+        r.resizeDrawingSurfaceToCanvas();
       }
     });
     
-    // Remove the resize event listener - this was causing jittering
-    // addEventListener('resize', () => r.resizeDrawingSurfaceToCanvas());
+    // Lock canvas dimensions every 100ms for first 2 seconds (safety net)
+    let lockInterval = setInterval(() => {
+      lockCanvas();
+    }, 100);
+    
+    setTimeout(() => {
+      clearInterval(lockInterval);
+    }, 2000);
+    
+    // Handle resize events but lock dimensions
+    addEventListener('resize', () => {
+      lockCanvas();
+      if (r && r.resizeDrawingSurfaceToCanvas) {
+        r.resizeDrawingSurfaceToCanvas();
+      }
+    });
   </script>
 </body>
 </html>
