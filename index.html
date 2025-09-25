@@ -5,26 +5,45 @@
   <title>Rive Fitness Loader</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
-  html,body{height:100%;margin:0}body{display:flex;justify-content:center;align-items:center;background:#7c7c7c00}canvas{width:600px}</style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #7c7c7c00;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    canvas {
+      width: 600px;   /* Fixed visible size */
+      height: 659px;  /* Fixed visible size */
+      display: block;
+    }
+  </style>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
 </head>
 <body>
-  <canvas id="rive-canvas" width="600" height="659"></canvas>
+  <canvas id="rive-canvas"></canvas>
   <script>
-    const r = new rive.Rive({
-      src:'fitness_loader_final.riv', 
-      canvas:document.getElementById('rive-canvas'),
-      autoplay:true,
-      autoBind:true,
-      artboard:'MAIN', 
-      stateMachines:'State Machine 1',
+    const canvas = document.getElementById('rive-canvas');
 
-      onLoad: function() {
+    // Set buffer once to match CSS size × devicePixelRatio
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = 600 * dpr;
+    canvas.height = 659 * dpr;
+
+    const r = new rive.Rive({
+      src: 'fitness_loader_final.riv',
+      canvas,
+      autoplay: true,
+      autoBind: true,
+      artboard: 'MAIN',
+      stateMachines: 'State Machine 1',
+      onLoad: () => {
         r.resizeDrawingSurfaceToCanvas();
       }
-
     });
-    addEventListener('resize',()=>r.resizeDrawingSurfaceToCanvas());
+
+    // ❌ DO NOT resize on window resize – that’s what causes the flicker
   </script>
 </body>
 </html>
