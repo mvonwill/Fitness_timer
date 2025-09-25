@@ -14,22 +14,18 @@
       align-items: center;
     }
     canvas {
-      width: 600px;   /* Fixed visible size */
-      height: 659px;  /* Fixed visible size */
+      width: 600px;   /* CSS size */
+      height: 659px;  /* CSS size */
       display: block;
     }
   </style>
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
 </head>
 <body>
-  <canvas id="rive-canvas"></canvas>
+  <!-- Pre-sized canvas prevents Chrome’s first-frame flash -->
+  <canvas id="rive-canvas" width="600" height="659"></canvas>
   <script>
     const canvas = document.getElementById('rive-canvas');
-
-    // Set buffer once to match CSS size × devicePixelRatio
-    const dpr = window.devicePixelRatio || 1;
-    canvas.width = 600 * dpr;
-    canvas.height = 659 * dpr;
 
     const r = new rive.Rive({
       src: 'fitness_loader_final.riv',
@@ -39,11 +35,15 @@
       artboard: 'MAIN',
       stateMachines: 'State Machine 1',
       onLoad: () => {
+        // Ensure buffer matches CSS *and* devicePixelRatio
         r.resizeDrawingSurfaceToCanvas();
       }
     });
 
-    // ❌ DO NOT resize on window resize – that’s what causes the flicker
+    // Optional: re-run if window is resized
+    window.addEventListener('resize', () => {
+      r.resizeDrawingSurfaceToCanvas();
+    });
   </script>
 </body>
 </html>
