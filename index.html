@@ -2,16 +2,16 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <title>Rive Fitness Loader</title>
+  <title>Rive Loader No Flicker</title>
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <style>
     html, body {
       height: 100%;
       margin: 0;
-      background: #7c7c7c00;
       display: flex;
       justify-content: center;
       align-items: center;
+      background: #7c7c7c00;
     }
     canvas {
       width: 600px;   /* CSS size */
@@ -22,25 +22,33 @@
   <script src="https://unpkg.com/@rive-app/webgl2"></script>
 </head>
 <body>
-  <!-- Pre-sized canvas prevents Chrome’s first-frame flash -->
   <canvas id="rive-canvas" width="600" height="659"></canvas>
   <script>
     const canvas = document.getElementById('rive-canvas');
 
+    // Step 1: Pre-scale the canvas buffer for HiDPI
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = 600 * dpr;
+    canvas.height = 659 * dpr;
+
+    // Step 2: Initialize Rive but don't autoplay yet
     const r = new rive.Rive({
       src: 'fitness_loader_final.riv',
       canvas,
-      autoplay: true,
-      autoBind: true,
+      autoplay: false,   // ❌ prevent first draw
+      autoBind: true,    // keep your state machine bindings
       artboard: 'MAIN',
       stateMachines: 'State Machine 1',
       onLoad: () => {
-        // Ensure buffer matches CSS *and* devicePixelRatio
+        // Step 3: Resize drawing surface after buffer is correct
         r.resizeDrawingSurfaceToCanvas();
+
+        // Step 4: Start animation manually
+        r.play();
       }
     });
 
-    // Optional: re-run if window is resized
+    // Optional: handle window resize
     window.addEventListener('resize', () => {
       r.resizeDrawingSurfaceToCanvas();
     });
